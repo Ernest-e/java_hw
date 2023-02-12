@@ -39,7 +39,7 @@ public class algLi {
         int raws = random.nextInt(20);;
         int cols = random.nextInt(20);;
         while (flag){
-            if (raws == 0 | cols == 0){
+            if (raws == 0 | cols == 0 | raws == 1 | cols == 1){
                 raws = random.nextInt(20);
                 cols = random.nextInt(20);
             } else {
@@ -59,48 +59,73 @@ public class algLi {
         }
     }
 
-    static int [][] setStartPoint (int[][]arr){
+    static void setStartPoint (int[][]arr){
         Random random = new Random();
         int raw = random.nextInt(arr.length);
         int col = random.nextInt(arr[0].length);
         arr[raw][col] = 1;
         startRaw = raw;
         startCol = col;
-        return arr;
+        
     }
 
-    static int[][] setExit(int[][]arr){     
+    static void setExit(int[][]arr){     
         Random random = new Random();
         int i = 0;
-        while (i < 1){
-            int raw = random.nextInt(arr.length);
-            int col = random.nextInt(arr[0].length);
-            if (arr[raw][col] == 1){
-                continue;
+        int counter = 0;
+        for (int j = 0; j < arr.length; j ++){
+            for (int k = 0; k < arr[0].length; k++){
+                if (arr[j][k] == 0){
+                    counter += 1;
+                }
             }
-            arr[raw][col] = -2;
-            exitRaw = raw;
-            exitCol = col;
-            i ++;
         }
-        
-        return arr;
+
+        if (counter > 0){
+            while (i < 1){
+                int raw = random.nextInt(arr.length);
+                int col = random.nextInt(arr[0].length);
+                if (arr[raw][col] == 1){
+                    continue;
+                }
+                arr[raw][col] = -2;
+                exitRaw = raw;
+                exitCol = col;
+                i ++;
+            }
+        }
     }
     
-    static int[][] setWalls(int[][]arr){
+    static void setWalls(int[][]arr){
         Random random = new Random();
-        int wallsCount = random.nextInt((arr.length*arr[0].length)/4);
-        int i = 0;
-        while (i < wallsCount){
-            int raw = random.nextInt(arr.length);
-            int col = random.nextInt(arr[0].length);
-            if (arr[raw][col] == 1 || arr[raw][col] == -2 || arr[raw][col] == -1){
+        int counter = 0;
+        for (int j = 0; j < arr.length; j ++){
+            for (int k = 0; k < arr[0].length; k++){
+                if (arr[j][k] == 0){
+                    counter += 1;
+                }
+            }
+        }
+        Boolean flag = true;
+        while (flag){
+            int wallsCount = random.nextInt((arr.length*arr[0].length)/4);
+            if (wallsCount > counter){
                 continue;
             }
-            arr[raw][col] = -1;
-            i ++;
+            else{
+                int i = 0;
+                while (i < wallsCount){
+                    int raw = random.nextInt(arr.length);
+                    int col = random.nextInt(arr[0].length);
+                    if (arr[raw][col] == 1 || arr[raw][col] == -2 || arr[raw][col] == -1){
+                        continue;
+                    }
+                    arr[raw][col] = -1;
+                    i ++;
+                }
+                flag = false;
+            }
         }
-        return arr;
     }
 
 
